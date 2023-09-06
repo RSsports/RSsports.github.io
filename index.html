@@ -167,43 +167,40 @@
         // Display the initial list of cards
         displayCards();
     // Function to fetch and display the API response
-    function fetchAndDisplayApiResponse() {
-            const apiUrl = 'https://api-nba-v1.p.rapidapi.com/players?team=1&season=2021';
-            
-            const xhr = new XMLHttpRequest();
-            xhr.withCredentials = true;
-            
-            xhr.addEventListener('readystatechange', function () {
-                if (this.readyState === this.DONE) {
-                    if (this.status === 200) {
-                        const data = JSON.parse(this.responseText);
+    async function fetchAndDisplayApiResponse() {
+        const apiUrl = 'https://api-nba-v1.p.rapidapi.com/players?team=1&season=2021';
+        const apiOptions = {
+            method: 'GET',
+            headers: {
+                'X-RapidAPI-Key': 'b1182b6a64mshff6fcbeabf69dc2p199d99jsn12adc869f7a0',
+                'X-RapidAPI-Host': 'api-nba-v1.p.rapidapi.com'
+            }
+        };
 
-                        // Display the API response in the HTML element
-                        const apiResponseElement = document.getElementById("apiResponse");
+        try {
+            const response = await fetch(apiUrl, apiOptions);
+            const result = await response.text();
+            const data = JSON.parse(result);
 
-                        // Clear the existing content
-                        apiResponseElement.innerHTML = '';
+            // Display the API response in the HTML element
+            const apiResponseElement = document.getElementById("apiResponse");
 
-                        // Create a <pre> element for formatted JSON response
-                        const preElement = document.createElement("pre");
-                        preElement.textContent = JSON.stringify(data, null, 2);
+            // Clear the existing content
+            apiResponseElement.innerHTML = '';
 
-                        // Append the <pre> element to the API response div
-                        apiResponseElement.appendChild(preElement);
-                    } else {
-                        console.error("API request failed with status:", this.status);
-                    }
-                }
-            });
-            
-            xhr.open('GET', apiUrl);
-            xhr.setRequestHeader('X-RapidAPI-Key', 'b1182b6a64mshff6fcbeabf69dc2p199d99jsn12adc869f7a0');
-            xhr.setRequestHeader('X-RapidAPI-Host', 'api-nba-v1.p.rapidapi.com');
-            xhr.send();
+            // Create a <pre> element for formatted JSON response
+            const preElement = document.createElement("pre");
+            preElement.textContent = JSON.stringify(data, null, 2);
+
+            // Append the <pre> element to the API response div
+            apiResponseElement.appendChild(preElement);
+        } catch (error) {
+            console.error(error);
         }
+    }
 
-        // Fetch the API data when the page loads
-        window.addEventListener("load", fetchAndDisplayApiResponse);
+    // Fetch the API data when the page loads
+    window.addEventListener("load", fetchAndDisplayApiResponse);
     </script>
 </body>
 </html>
