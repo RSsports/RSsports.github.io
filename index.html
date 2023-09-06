@@ -90,9 +90,9 @@
 
         // Display the initial list of cards
         displayCards();
-        async function fetchAndDisplayApiResponse() {
-        const apiUrl = 'https://api-nba-v1.p.rapidapi.com/players?team=1&season=2021';
-        const apiOptions = {
+        async function fetchAndDisplayNBAPlayers() {
+        const url = 'https://api-nba-v1.p.rapidapi.com/players?team=1&season=2021';
+        const options = {
             method: 'GET',
             headers: {
                 'X-RapidAPI-Key': 'b1182b6a64mshff6fcbeabf69dc2p199d99jsn12adc869f7a0',
@@ -101,29 +101,49 @@
         };
 
         try {
-            const response = await fetch(apiUrl, apiOptions);
-            const result = await response.text();
-            const data = JSON.parse(result);
+            const response = await fetch(url, options);
+            const data = await response.json(); // Parse JSON response
 
-            // Display the API response in the HTML element
-            const apiResponseElement = document.getElementById("apiResponse");
+            const playersContainer = document.getElementById('playersContainer');
 
-            // Clear the existing content
-            apiResponseElement.innerHTML = '';
+            // Clear existing player cards
+            playersContainer.innerHTML = '';
 
-            // Create a <pre> element for formatted JSON response
-            const preElement = document.createElement("pre");
-            preElement.textContent = JSON.stringify(data, null, 2);
+            // Loop through the fetched data and create player cards
+            data.data.forEach(player => {
+                const playerCard = document.createElement('div');
+                playerCard.classList.add('player-card');
 
-            // Append the <pre> element to the API response div
-            apiResponseElement.appendChild(preElement);
+                const playerName = document.createElement('div');
+                playerName.classList.add('player-name');
+                playerName.textContent = `${player.first_name} ${player.last_name}`;
+
+                const playerInfo = document.createElement('div');
+                playerInfo.classList.add('player-info');
+                playerInfo.innerHTML = `
+                    <p><strong>Birth Date:</strong> ${player.birth.date}</p>
+                    <p><strong>Country:</strong> ${player.birth.country}</p>
+                    <p><strong>NBA Start:</strong> ${player.nba.start}</p>
+                    <p><strong>Height:</strong> ${player.height.feets} feet ${player.height.inches} inches</p>
+                    <p><strong>Weight:</strong> ${player.weight.pounds} pounds (${player.weight.kilograms} kg)</p>
+                    <p><strong>College:</strong> ${player.college}</p>
+                    <p><strong>Affiliation:</strong> ${player.affiliation}</p>
+                    <p><strong>Jersey Number:</strong> ${player.leagues.standard.jersey}</p>
+                    <p><strong>Position:</strong> ${player.leagues.standard.pos}</p>
+                `;
+
+                playerCard.appendChild(playerName);
+                playerCard.appendChild(playerInfo);
+
+                playersContainer.appendChild(playerCard);
+            });
         } catch (error) {
             console.error(error);
         }
     }
 
-    // Fetch the API data when the page loads
-    window.addEventListener("load", fetchAndDisplayApiResponse);
+    // Fetch NBA player data and display it as cards when the page loads
+    window.addEventListener("load", fetchAndDisplayNBAPlayers);
     </script>
 </body>
 </html>
