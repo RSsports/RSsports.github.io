@@ -97,10 +97,8 @@
     <!-- Display existing cards -->
     <h2>Existing Cards</h2>
     <ul id="cardList"></ul>
-    <h2>NBA Players</h2>
-    <div id="playersContainer" class="players-container">
-    <!-- Player cards will be dynamically generated here -->
-    </div>
+    <h2>API Response</h2>
+    <div id="apiResponse"></div>
     <script>
         // Sample data for trading cards (you would replace this with data from a database)
         let tradingCards = [
@@ -168,9 +166,11 @@
 
         // Display the initial list of cards
         displayCards();
-        async function fetchAndDisplayNBAPlayers() {
-        const url = 'https://api-nba-v1.p.rapidapi.com/players?team=1&season=2021';
-        const options = {
+        <script>
+    // Function to fetch and display the API response
+    async function fetchAndDisplayApiResponse() {
+        const apiUrl = 'https://api-nba-v1.p.rapidapi.com/players?team=1&season=2021';
+        const apiOptions = {
             method: 'GET',
             headers: {
                 'X-RapidAPI-Key': 'b1182b6a64mshff6fcbeabf69dc2p199d99jsn12adc869f7a0',
@@ -179,49 +179,30 @@
         };
 
         try {
-            const response = await fetch(url, options);
-            const data = await response.json(); // Parse JSON response
+            const response = await fetch(apiUrl, apiOptions);
+            const result = await response.text();
+            const data = JSON.parse(result);
 
-            const playersContainer = document.getElementById('playersContainer');
+            // Display the API response in the HTML element
+            const apiResponseElement = document.getElementById("apiResponse");
 
-            // Clear existing player cards
-            playersContainer.innerHTML = '';
+            // Clear the existing content
+            apiResponseElement.innerHTML = '';
 
-            // Loop through the fetched data and create player cards
-            data.data.forEach(player => {
-                const playerCard = document.createElement('div');
-                playerCard.classList.add('player-card');
+            // Create a <pre> element for formatted JSON response
+            const preElement = document.createElement("pre");
+            preElement.textContent = JSON.stringify(data, null, 2);
 
-                const playerName = document.createElement('div');
-                playerName.classList.add('player-name');
-                playerName.textContent = `${player.first_name} ${player.last_name}`;
-
-                const playerInfo = document.createElement('div');
-                playerInfo.classList.add('player-info');
-                playerInfo.innerHTML = `
-                    <p><strong>Birth Date:</strong> ${player.birth.date}</p>
-                    <p><strong>Country:</strong> ${player.birth.country}</p>
-                    <p><strong>NBA Start:</strong> ${player.nba.start}</p>
-                    <p><strong>Height:</strong> ${player.height.feets} feet ${player.height.inches} inches</p>
-                    <p><strong>Weight:</strong> ${player.weight.pounds} pounds (${player.weight.kilograms} kg)</p>
-                    <p><strong>College:</strong> ${player.college}</p>
-                    <p><strong>Affiliation:</strong> ${player.affiliation}</p>
-                    <p><strong>Jersey Number:</strong> ${player.leagues.standard.jersey}</p>
-                    <p><strong>Position:</strong> ${player.leagues.standard.pos}</p>
-                `;
-
-                playerCard.appendChild(playerName);
-                playerCard.appendChild(playerInfo);
-
-                playersContainer.appendChild(playerCard);
-            });
+            // Append the <pre> element to the API response div
+            apiResponseElement.appendChild(preElement);
         } catch (error) {
             console.error(error);
         }
     }
 
-    // Fetch NBA player data and display it as cards when the page loads
-    window.addEventListener("load", fetchAndDisplayNBAPlayers);
+    // Fetch the API data when the page loads
+    window.addEventListener("load", fetchAndDisplayApiResponse);
+</script>
     </script>
 </body>
 </html>
