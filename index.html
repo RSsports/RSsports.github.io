@@ -5,6 +5,82 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sports Trading Cards</title>
 </head>
+<style>
+    /* Page background color */
+    body {
+        background-color: #f0f0f0;
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Header style */
+    h2 {
+        text-align: center;
+        color: #333;
+        margin-top: 20px;
+    }
+
+    /* Container for player cards */
+    .players-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 20px;
+        margin: 20px auto;
+        max-width: 1200px;
+    }
+
+    /* Player card style */
+    .player-card {
+        width: 300px;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        background-color: #ffffff; /* White background */
+        text-align: left;
+        margin-bottom: 20px;
+        transition: transform 0.3s;
+    }
+
+    .player-card:hover {
+        transform: scale(1.05); /* Zoom in on hover */
+        background-color: #f2f2f2; /* Light gray background on hover */
+    }
+
+    /* Player name style */
+    .player-name {
+        font-size: 18px;
+        font-weight: bold;
+        color: #009688; /* Green color for player names */
+        margin-bottom: 10px;
+    }
+
+    /* Player information style */
+    .player-info {
+        font-size: 16px;
+        margin-bottom: 10px;
+        color: #333; /* Darker text color for player information */
+    }
+
+    /* Styling for individual player data items */
+    .player-info p {
+        margin: 0;
+    }
+
+    /* Add a border for the player cards */
+    .player-card {
+        border: 2px solid #009688; /* Green border */
+    }
+
+    /* Style the player card heading */
+    .player-card h3 {
+        color: #009688; /* Green color for headings */
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+</style>
 <body>
     <h1>Sports Trading Cards</h1>
     
@@ -22,7 +98,11 @@
     <h2>Existing Cards</h2>
     <ul id="cardList"></ul>
     <h2>API Response</h2>
-    <div id="apiResponse"></div>
+    <div id="apiResponse">
+    <table id="apiResponseTable">
+        <!-- API response table will be inserted here -->
+    </table>
+</div>
     <script>
         // Sample data for trading cards (you would replace this with data from a database)
         let tradingCards = [
@@ -91,60 +171,42 @@
 
         // Display the initial list of cards
         displayCards();
-        async function fetchAndDisplayNBAPlayers() {
-        const url = 'https://api-nba-v1.p.rapidapi.com/players?team=1&season=2021';
-        const options = {
-            method: 'GET',
-            headers: {
-                'X-RapidAPI-Key': 'b1182b6a64mshff6fcbeabf69dc2p199d99jsn12adc869f7a0',
-                'X-RapidAPI-Host': 'api-nba-v1.p.rapidapi.com'
+    // Function to fetch and display the API response
+    async function fetchAndDisplayApiResponse() {
+            const apiUrl = 'https://api-nba-v1.p.rapidapi.com/players?team=1&season=2021';
+            const apiOptions = {
+                method: 'GET',
+                headers: {
+                    'X-RapidAPI-Key': 'b1182b6a64mshff6fcbeabf69dc2p199d99jsn12adc869f7a0',
+                    'X-RapidAPI-Host': 'api-nba-v1.p.rapidapi.com'
+                }
+            };
+
+            try {
+                const response = await fetch(apiUrl, apiOptions);
+                const data = await response.json();
+
+                // Display the API response in the HTML element
+                const apiResponseElement = document.getElementById("apiResponse");
+
+                // Clear the existing content
+                apiResponseElement.innerHTML = '';
+
+                // Create a <pre> element for formatted JSON response
+                const preElement = document.createElement("pre");
+                preElement.textContent = JSON.stringify(data, null, 2);
+
+                // Append the <pre> element to the API response div
+                apiResponseElement.appendChild(preElement);
+            } catch (error) {
+                console.error(error);
             }
-        };
-
-        try {
-            const response = await fetch(url, options);
-            const data = await response.json(); // Parse JSON response
-
-            const playersContainer = document.getElementById('playersContainer');
-
-            // Clear existing player cards
-            playersContainer.innerHTML = '';
-
-            // Loop through the fetched data and create player cards
-            data.data.forEach(player => {
-                const playerCard = document.createElement('div');
-                playerCard.classList.add('player-card');
-
-                const playerName = document.createElement('div');
-                playerName.classList.add('player-name');
-                playerName.textContent = `${player.first_name} ${player.last_name}`;
-
-                const playerInfo = document.createElement('div');
-                playerInfo.classList.add('player-info');
-                playerInfo.innerHTML = `
-                    <p><strong>Birth Date:</strong> ${player.birth.date}</p>
-                    <p><strong>Country:</strong> ${player.birth.country}</p>
-                    <p><strong>NBA Start:</strong> ${player.nba.start}</p>
-                    <p><strong>Height:</strong> ${player.height.feets} feet ${player.height.inches} inches</p>
-                    <p><strong>Weight:</strong> ${player.weight.pounds} pounds (${player.weight.kilograms} kg)</p>
-                    <p><strong>College:</strong> ${player.college}</p>
-                    <p><strong>Affiliation:</strong> ${player.affiliation}</p>
-                    <p><strong>Jersey Number:</strong> ${player.leagues.standard.jersey}</p>
-                    <p><strong>Position:</strong> ${player.leagues.standard.pos}</p>
-                `;
-
-                playerCard.appendChild(playerName);
-                playerCard.appendChild(playerInfo);
-
-                playersContainer.appendChild(playerCard);
-            });
-        } catch (error) {
-            console.error(error);
         }
-    }
 
-    // Fetch NBA player data and display it as cards when the page loads
-    window.addEventListener("load", fetchAndDisplayNBAPlayers);
+        // ... (your existing JavaScript code) ...
+
+        // Fetch the API data when the page loads
+        window.addEventListener("load", fetchAndDisplayApiResponse);
     </script>
 </body>
 </html>
