@@ -172,48 +172,40 @@
         displayCards();
     // Function to fetch and display the API response
     async function fetchAndDisplayApiResponse() {
-        const apiUrl = 'https://api-nba-v1.p.rapidapi.com/players?team=1&season=2021';
-        const apiOptions = {
-            method: 'GET',
-            headers: {
-                'X-RapidAPI-Key': 'b1182b6a64mshff6fcbeabf69dc2p199d99jsn12adc869f7a0',
-                'X-RapidAPI-Host': 'api-nba-v1.p.rapidapi.com'
-            }
-        };
-
-        try {
-            const response = await fetch(apiUrl, apiOptions);
-            const result = await response.text();
-            const data = JSON.parse(result);
-
-            // Display the API response in the HTML element
-            const apiResponseTable = document.getElementById("apiResponseTable");
-
-            // Clear the existing content
-            apiResponseTable.innerHTML = '';
-
-            // Create a table header row
-            const tableHeaderRow = apiResponseTable.insertRow(0);
-            for (const key in data[0]) {
-                const th = document.createElement("th");
-                th.textContent = key;
-                tableHeaderRow.appendChild(th);
-            }
-
-            // Create table rows and cells
-            data.forEach((item, index) => {
-                const row = apiResponseTable.insertRow(index + 1);
-                for (const key in item) {
-                    const cell = row.insertCell();
-                    cell.textContent = item[key];
+            const apiUrl = 'https://exchangerate-api.p.rapidapi.com/rapid/latest/USD';
+            const apiOptions = {
+                method: 'GET',
+                headers: {
+                    'X-RapidAPI-Key': 'b1182b6a64mshff6fcbeabf69dc2p199d99jsn12adc869f7a0',
+                    'X-RapidAPI-Host': 'exchangerate-api.p.rapidapi.com'
                 }
-            });
-        } catch (error) {
-            console.error(error);
+            };
+
+            try {
+                const response = await fetch(apiUrl, apiOptions);
+                const data = await response.json();
+
+                // Display the API response in the HTML element
+                const apiResponseElement = document.getElementById("apiResponse");
+
+                // Clear the existing content
+                apiResponseElement.innerHTML = '';
+
+                // Create a <pre> element for formatted JSON response
+                const preElement = document.createElement("pre");
+                preElement.textContent = JSON.stringify(data, null, 2);
+
+                // Append the <pre> element to the API response div
+                apiResponseElement.appendChild(preElement);
+            } catch (error) {
+                console.error(error);
+            }
         }
-    }
-    // Fetch the API data when the page loads
-    window.addEventListener("load", fetchAndDisplayApiResponse);
+
+        // ... (your existing JavaScript code) ...
+
+        // Fetch the API data when the page loads
+        window.addEventListener("load", fetchAndDisplayApiResponse);
     </script>
 </body>
 </html>
