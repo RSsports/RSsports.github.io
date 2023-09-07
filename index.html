@@ -98,7 +98,11 @@
     <h2>Existing Cards</h2>
     <ul id="cardList"></ul>
     <h2>API Response</h2>
-    <div id="apiResponse"></div>
+    <div id="apiResponse">
+    <table id="apiResponseTable">
+        <!-- API response table will be inserted here -->
+    </table>
+</div>
     <script>
         // Sample data for trading cards (you would replace this with data from a database)
         let tradingCards = [
@@ -183,22 +187,31 @@
             const data = JSON.parse(result);
 
             // Display the API response in the HTML element
-            const apiResponseElement = document.getElementById("apiResponse");
+            const apiResponseTable = document.getElementById("apiResponseTable");
 
             // Clear the existing content
-            apiResponseElement.innerHTML = '';
+            apiResponseTable.innerHTML = '';
 
-            // Create a <pre> element for formatted JSON response
-            const preElement = document.createElement("pre");
-            preElement.textContent = JSON.stringify(data, null, 2);
+            // Create a table header row
+            const tableHeaderRow = apiResponseTable.insertRow(0);
+            for (const key in data[0]) {
+                const th = document.createElement("th");
+                th.textContent = key;
+                tableHeaderRow.appendChild(th);
+            }
 
-            // Append the <pre> element to the API response div
-            apiResponseElement.appendChild(preElement);
+            // Create table rows and cells
+            data.forEach((item, index) => {
+                const row = apiResponseTable.insertRow(index + 1);
+                for (const key in item) {
+                    const cell = row.insertCell();
+                    cell.textContent = item[key];
+                }
+            });
         } catch (error) {
             console.error(error);
         }
     }
-
     // Fetch the API data when the page loads
     window.addEventListener("load", fetchAndDisplayApiResponse);
     </script>
