@@ -172,12 +172,12 @@
         displayCards();
     // Function to fetch and display the API response
     async function fetchAndDisplayApiResponse() {
-            const apiUrl = 'https://exchangerate-api.p.rapidapi.com/rapid/latest/USD';
+            const apiUrl = 'https://api-nba-v1.p.rapidapi.com/players?team=1&season=2021';
             const apiOptions = {
                 method: 'GET',
                 headers: {
                     'X-RapidAPI-Key': 'b1182b6a64mshff6fcbeabf69dc2p199d99jsn12adc869f7a0',
-                    'X-RapidAPI-Host': 'exchangerate-api.p.rapidapi.com'
+                    'X-RapidAPI-Host': 'api-nba-v1.p.rapidapi.com'
                 }
             };
 
