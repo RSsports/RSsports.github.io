@@ -108,8 +108,8 @@
         let tradingCards = [
             { id: 1, playerName: "Lebron James", team: "Los Angeles Lakers" },
             { id: 2, playerName: "Stephen Curry", team: "Golden State Warriors" },
-            { id: 3, playerName: "Patrick Mahomes", team: "Kansas City Chiefs"},
-            { id: 5, playerName: "Odell Beckham Jr", team: "Baltimore Ravens"},
+            { id: 3, playerName: "Patrick Mahomes", team: "Kansas City Cheifs"},
+            { id: 5, playerName: "Odell Beckham Jr", team: "Baltiomore Ravens"},
             { id: 6, playerName: "Josh Allen", team: "Buffalo Bills"},
             { id: 7, playerName: "Zion Williamson", team: "New Orleans Pelicans"},
             { id: 8, playerName: "Ja Morant", team: "Memphis Grizzlies"},
@@ -218,11 +218,7 @@
                 console.error(error);
             }
         }
-        <div id="apiResponse">
-        <h2>API Response</h2>
-        <table id="apiResponseTable">
-        </table>
-    </div>
+
         // ... (your existing JavaScript code) ...
 
         // Fetch the API data when the page loads
@@ -234,14 +230,25 @@
             <!-- API response table will be inserted here -->
         </table>
     </div>
-     
+    
+    <script>
+        // ... (your existing JavaScript code) ...
+    
+        // Function to fetch and display the API response in a table
+        async function fetchAndDisplayApiResponse() {
+            // ... (provided JavaScript code for fetching and displaying API data in a table) ...
+        }
+    
+        // ... (your existing JavaScript code) ...
+    
+        // Fetch the API data when the page loads
+        window.addEventListener("load", fetchAndDisplayApiResponse);
+    </script>
+    
+    <!-- ... (your existing closing HTML tags) ... -->
     
     
-    <div id="apiResponse">
-        <h2>API Response</h2>
-        <table id="apiResponseTable">
-        </table>
-    </div>
+    
     
     
     
