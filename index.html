@@ -100,9 +100,9 @@
     
     <!-- API Response -->
     <h2>API Response</h2>
-    <table id="apiResponseTable">
-        <!-- API response table will be inserted here -->
-    </table>
+    <div id="apiResponse">
+        <!-- API response data will be inserted here -->
+    </div>
 
     <script>
         // Sample data for trading cards (you would replace this with data from a database)
@@ -188,30 +188,22 @@
                 const response = await fetch(apiUrl, apiOptions);
                 const data = await response.json();
 
-                // Display the API response in the HTML table
-                const apiResponseTable = document.getElementById("apiResponseTable");
+                // Display the API response in the HTML element
+                const apiResponseElement = document.getElementById("apiResponse");
 
-                // Clear the existing table content
-                apiResponseTable.innerHTML = '';
+                // Clear the existing content
+                apiResponseElement.innerHTML = '';
 
-                // Create table headers (assuming 'full_name' and 'team' are API response fields)
-                const tableHeaders = `
-                    <tr>
-                        <th>Player Name</th>
-                        <th>Team</th>
-                    </tr>
-                `;
-
-                apiResponseTable.innerHTML = tableHeaders;
-
-                // Loop through the data and create rows for each player
+                // Loop through the data and format it for display
                 data.data.forEach(player => {
-                    const row = document.createElement("tr");
-                    row.innerHTML = `
-                        <td>${player.full_name}</td>
-                        <td>${player.team}</td>
+                    const playerInfo = document.createElement("div");
+                    playerInfo.className = "player-info";
+                    playerInfo.innerHTML = `
+                        <p><strong>Player Name:</strong> ${player.full_name}</p>
+                        <p><strong>Team:</strong> ${player.team}</p>
+                        <!-- Add more information as needed -->
                     `;
-                    apiResponseTable.appendChild(row);
+                    apiResponseElement.appendChild(playerInfo);
                 });
             } catch (error) {
                 console.error(error);
