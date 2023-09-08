@@ -209,11 +209,22 @@
                 apiResponseElement.innerHTML = '';
 
                 // Create a <pre> element for formatted JSON response
-                const preElement = document.createElement("pre");
-                preElement.textContent = JSON.stringify(data, null, 2);
+                const tableHeaders = `
 
-                // Append the <pre> element to the API response div
-                apiResponseElement.appendChild(preElement);
+            <tr>
+                <th>Player Name</th>
+                <th>Team</th>
+            </tr>
+        `;
+
+        apiResponseTable.innerHTML = tableHeaders;
+
+        // Loop through the data and create rows for each player
+        data.data.forEach(player => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${player.full_name}</td>
+                <td>
             } catch (error) {
                 console.error(error);
             }
