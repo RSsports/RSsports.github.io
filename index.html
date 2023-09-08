@@ -93,7 +93,7 @@
         <input type="text" id="team" required>
         <button type="submit">Create Card</button>
     </form>
-
+    <h2>Your Card Count: <span id="cardCount">0</span></h2>
     <!-- Display existing cards -->
     <h2>Existing Cards</h2>
     <ul id="cardList"></ul>
@@ -129,17 +129,21 @@
 
         // Function to display cards
         function displayCards() {
-            const cardList = document.getElementById("cardList");
-            cardList.innerHTML = ""; // Clear the existing list
+    const cardList = document.getElementById("cardList");
+    cardList.innerHTML = ""; // Clear the existing list
 
-            tradingCards.forEach(card => {
-                const listItem = document.createElement("li");
-                listItem.innerHTML = `<strong>${card.playerName}</strong> - Team: ${card.team} 
-                    <button onclick="editCard(${card.id})">Edit</button>
-                    <button onclick="deleteCard(${card.id})">Delete</button>`;
-                cardList.appendChild(listItem);
-            });
-        }
+    tradingCards.forEach(card => {
+        const listItem = document.createElement("li");
+        listItem.innerHTML = `<strong>${card.playerName}</strong> - Team: ${card.team} 
+            <button onclick="editCard(${card.id})">Edit</button>
+            <button onclick="deleteCard(${card.id})">Delete</button>`;
+        cardList.appendChild(listItem);
+    });
+
+    // Update the card count
+    const cardCountElement = document.getElementById("cardCount");
+    cardCountElement.textContent = tradingCards.length;
+}
 
         // Function to create a new card
         function createCard(event) {
