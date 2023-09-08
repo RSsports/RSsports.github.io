@@ -203,10 +203,10 @@
                 const data = await response.json();
 
                 // Display the API response in the HTML element
-                const apiResponseElement = document.getElementById("apiResponse");
+                const apiResponseTable = document.getElementById("apiResponse");
 
                 // Clear the existing content
-                apiResponseElement.innerHTML = '';
+                apiResponseTable.innerHTML = '';
 
                 // Create a <pre> element for formatted JSON response
                 const tableHeaders = `
